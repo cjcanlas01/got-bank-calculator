@@ -57,13 +57,6 @@
 <script src="accounting.min.js"></script>
 <script>
 
-    $('input[type=text]').each(function() {
-        $(this).on('focusout', function() {
-            let elemVal = curForm($(this).val());
-            $(this).val(elemVal);
-        });
-    });
-
     // Format number to currency - wrapper
     let curForm = function(input) {
         return accounting.formatNumber(input);
@@ -74,19 +67,36 @@
         return accounting.unformat(input);
     }
 
-    $('#calculate').on('click', function() {
-        let shipment = Number(curUnForm($('#shipment').val()));
-        let delivered = Number(curUnForm($('#delivered').val()));
-        let objReturned = computeAvailableBalance(shipment, delivered);
-
-        $('#total-balance').val(curForm(objReturned['totalBalance']));
-        $('#available-balance').val(curForm(objReturned['availableBalance']));
+    // Apply format when element is focused out
+    document.addEventListener('focusout', function(event) {
+        let elem = event.target;
+        elem.value = curForm(elem.value);
     });
 
-    $('#clear').on('click', function() {
-        $('input[type=text]').each(function() {
-            $(this).val('');
-        });
+    let btnCalc = document.getElementById('calculate');
+    btnCalc.addEventListener('click', function() {
+        // Get value of input elements
+        let shipmentElem = document.getElementById('shipment');
+        let deliveredElem = document.getElementById('delivered');
+        let totalBalanceElem = document.getElementById('total-balance');
+        let availableBalanceElem = document.getElementById('available-balance');
+        
+        let shipment = Number(curUnForm(shipmentElem.value));
+        let delivered = Number(curUnForm(deliveredElem.value));
+
+        let objReturned = computeAvailableBalance(shipment, delivered);
+
+        totalBalanceElem.value = curForm(objReturned['totalBalance']);
+        availableBalanceElem.value = curForm(objReturned['availableBalance']);
+    });
+
+    let btnClear = document.getElementById('clear');
+    btnClear.addEventListener('click', function() {
+        let inputElems = document.querySelectorAll('input[type=text]');
+
+        for(let i = 0; i < inputElems.length; i++) {
+            inputElems[i].value = '';
+        }
     });
 
     const percentMultiplicator = 5;
