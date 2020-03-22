@@ -1,3 +1,38 @@
+import $ from '../scripts/wrapper.js';
+
+let setupDarkMode = () => {
+    // Dark mode object
+    let darkMode = new Nightly();
+    let darkThemeFlag = JSON.parse(localStorage.getItem('dark-theme'));
+
+    if (darkThemeFlag == true) {
+        darkMode.darkify();
+    } else if (darkThemeFlag == false) {
+        darkMode.lightify();
+    } else {
+        localStorage.setItem('dark-theme', null);
+    }
+
+    $('#dark-side').listen('click', function() {
+        let currentDarkThemeFlag = JSON.parse(localStorage.getItem('dark-theme'));
+
+        switch(currentDarkThemeFlag) {
+            case null:
+            case false:
+                darkMode.darkify();
+                localStorage.setItem('dark-theme', true);
+            break;
+
+            case true:
+                darkMode.lightify();
+                localStorage.setItem('dark-theme', false);
+            break;
+        }
+    });
+}
+
+// setupDarkMode();
+
 // Format number to currency - wrapper
 let curForm = function(input) {
     return accounting.formatNumber(input);

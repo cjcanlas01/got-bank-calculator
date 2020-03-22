@@ -46,3 +46,5 @@ class JS {
         return this.obj.style;
     }
 }
+
+export default $;
