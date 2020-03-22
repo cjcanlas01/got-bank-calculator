@@ -55,59 +55,6 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="accounting.min.js"></script>
-<script>
-
-    // Format number to currency - wrapper
-    let curForm = function(input) {
-        return accounting.formatNumber(input);
-    }
-
-    // Unformat number to currency - wrapper
-    let curUnForm = function(input) {
-        return accounting.unformat(input);
-    }
-
-    // Apply format when element is focused out
-    document.addEventListener('focusout', function(event) {
-        let elem = event.target;
-        elem.value = curForm(elem.value);
-    });
-
-    let btnCalc = document.getElementById('calculate');
-    btnCalc.addEventListener('click', function() {
-        // Get value of input elements
-        let shipmentElem = document.getElementById('shipment');
-        let deliveredElem = document.getElementById('delivered');
-        let totalBalanceElem = document.getElementById('total-balance');
-        let availableBalanceElem = document.getElementById('available-balance');
-        
-        let shipment = Number(curUnForm(shipmentElem.value));
-        let delivered = Number(curUnForm(deliveredElem.value));
-
-        let objReturned = computeAvailableBalance(shipment, delivered);
-
-        totalBalanceElem.value = curForm(objReturned['totalBalance']);
-        availableBalanceElem.value = curForm(objReturned['availableBalance']);
-    });
-
-    let btnClear = document.getElementById('clear');
-    btnClear.addEventListener('click', function() {
-        let inputElems = document.querySelectorAll('input[type=text]');
-
-        for(let i = 0; i < inputElems.length; i++) {
-            inputElems[i].value = '';
-        }
-    });
-
-    const percentMultiplicator = 5;
-    let computeAvailableBalance = function(shipment, delivered) {
-        let totalBalance = shipment * percentMultiplicator;
-        let availableBalance = totalBalance - delivered;
-        let returnedObj = {};
-
-        returnedObj['availableBalance'] = availableBalance;
-        returnedObj['totalBalance'] = totalBalance;
-        return returnedObj;
-    }
-</script>
+<script src="scripts/wrapper.js"></script>
+<script src="scripts/system.js"></script>
 </html>
